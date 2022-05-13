@@ -19,7 +19,6 @@ contract Demo {
 
     receive() external payable {}
 
-    //todo not working Error: Transaction reverted: function call failed to execute
     function withdraw(uint256 _amount) external onlyOwner {
         owner.transfer(_amount);
     }

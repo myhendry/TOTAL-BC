@@ -19,10 +19,16 @@ async function main() {
   );
 
   const demoFactory = await ethers.getContractFactory("Demo");
-  // If we had constructor arguments, they would be passed into deploy()
   let demoContract = await demoFactory.deploy();
   await demoContract.deployed();
   console.log(`Demo Mined! Demo Address is at ${demoContract.address}`);
+
+  const callDemoFactory = await ethers.getContractFactory("CallDemo");
+  let callDemoContract = await callDemoFactory.deploy();
+  await callDemoContract.deployed();
+  console.log(
+    `CallDemo Mined! CallDemo Address is at ${callDemoContract.address}`
+  );
 
   // const nftMarketplaceFactory = await ethers.getContractFactory(
   //   "NFTMarketplace"
@@ -36,7 +42,7 @@ async function main() {
   // Last Deployed on ${networkId} network
   export const counterContractAddress = "${counterContract.address}"
   export const demoContractAddress = "${demoContract.address}"
-
+  export const callDemoContractAddress = "${callDemoContract.address}"
   `;
 
   writeAddressToFrontend(config);

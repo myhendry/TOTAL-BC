@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-import { Demo__factory, Demo } from "../typechain";
+import { Demo__factory, Demo, CallDemo__factory, CallDemo } from "../typechain";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 chai.use(chaiAsPromised);
@@ -10,6 +10,7 @@ const { expect } = chai;
 
 describe("Demo", () => {
   let demo: Demo;
+  let callDemo: CallDemo;
   let signers: SignerWithAddress[];
 
   beforeEach(async () => {
@@ -23,6 +24,13 @@ describe("Demo", () => {
     )) as Demo__factory;
     demo = await demoFactory.deploy();
     await demo.deployed();
+
+    const callDemoFactory = (await ethers.getContractFactory(
+      "CallDemo",
+      signers[0]
+    )) as CallDemo__factory;
+    callDemo = await callDemoFactory.deploy();
+    await callDemo.deployed();
 
     // 3
     const initialName = await demo.getName();
@@ -85,6 +93,16 @@ describe("Demo", () => {
       demoBalance = await demo.getBalance();
       balanceInEth = ethers.utils.formatEther(demoBalance.toString());
       expect(balanceInEth).to.eq("0.1");
+    });
+  });
+
+  describe("test call other contract function", async () => {
+    it("call setName and getName functions successfully in CallDemo", async () => {
+      let name = await callDemo.getName(demo.address);
+      expect(name).to.be.eq("hendry");
+      await callDemo.setName(demo.address, "steve");
+      name = await callDemo.getName(demo.address);
+      expect(name).to.be.eq("steve");
     });
   });
 });

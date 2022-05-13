@@ -1,3 +1,6 @@
+npm run test -- --network rinkeby
+npx hardhat run --network <localhost> scripts/deploy
+
 # Typescript Solidity Dev Starter Kit
 
 https://github.com/rhlsthrm/typescript-solidity-dev-starter-kit
