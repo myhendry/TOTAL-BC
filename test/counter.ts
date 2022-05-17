@@ -7,7 +7,7 @@ import { Counter__factory, Counter } from "../typechain";
 chai.use(chaiAsPromised);
 const { expect } = chai;
 
-describe("Counter", () => {
+describe.skip("Counter", () => {
   let counter: Counter;
 
   beforeEach(async () => {
@@ -29,7 +29,7 @@ describe("Counter", () => {
   });
 
   // 4
-  describe("count up", async () => {
+  describe.skip("count up", async () => {
     it("should count up", async () => {
       await counter.countUp();
       let count = await counter.getCount();
@@ -37,7 +37,7 @@ describe("Counter", () => {
     });
   });
 
-  describe("count down", async () => {
+  describe.skip("count down", async () => {
     // 5
     it("should fail due to underflow exception", () => {
       return expect(counter.countDown()).to.eventually.be.rejectedWith(

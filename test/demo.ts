@@ -39,7 +39,7 @@ describe("Demo", () => {
   });
 
   // 4
-  describe("check name", async () => {
+  describe.skip("check name", async () => {
     it("name should be hendry", async () => {
       let name = await demo.getName();
       expect(name).to.eq("hendry");
@@ -52,7 +52,7 @@ describe("Demo", () => {
     });
   });
 
-  describe("test deposit and withdraw function", async () => {
+  describe.skip("test deposit and withdraw function", async () => {
     it("successfully deposit 0.2 Eth into Demo Contract", async () => {
       let tx; // https://stackoverflow.com/questions/70677788/when-is-tx-wait1-required
 
@@ -96,13 +96,20 @@ describe("Demo", () => {
     });
   });
 
-  describe("test call other contract function", async () => {
+  describe.skip("test call other contract function", async () => {
     it("call setName and getName functions successfully in CallDemo", async () => {
       let name = await callDemo.getName(demo.address);
       expect(name).to.be.eq("hendry");
       await callDemo.setName(demo.address, "steve");
       name = await callDemo.getName(demo.address);
       expect(name).to.be.eq("steve");
+    });
+  });
+
+  describe("Interfaces", async () => {
+    it("interfaces", async () => {
+      const res = await demo.getTokenReserves();
+      console.log(res[0].toString(), res[1].toString());
     });
   });
 });

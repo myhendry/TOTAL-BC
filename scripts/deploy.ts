@@ -1,9 +1,13 @@
 import { ethers } from "hardhat";
 
 async function main() {
+  //github.com/myhendry/LAB/blob/main/blockchain/demo/scripts/deploy.ts
   const networkId = await (await ethers.provider.getNetwork()).chainId;
-
+  const network = await ethers.getDefaultProvider().getNetwork();
   const accounts = await ethers.getSigners();
+  console.log(
+    `You are Deploying on Network Name ${network.name} and ChainId ${network.chainId}. The NetworkId is ${networkId}`
+  );
 
   console.log(
     "Accounts:",
