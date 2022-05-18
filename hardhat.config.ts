@@ -17,6 +17,7 @@ interface Etherscan {
 type HardhatUserEtherscanConfig = HardhatUserConfig & Etherscan;
 
 const INFURA_API_KEY = process.env.INFURA_API_KEY || "";
+const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY || "";
 const ACCOUNT_PRIVATE_KEY1 =
   process.env.ACCOUNT_PRIVATE_KEY1! ||
   "0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3"; // well known private key
@@ -33,8 +34,11 @@ const config: HardhatUserEtherscanConfig = {
     ],
   },
   networks: {
-    hardhat: {},
-    localhost: {},
+    hardhat: {
+      forking: {
+        url: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+      },
+    },
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
       accounts: [ACCOUNT_PRIVATE_KEY1, ACCOUNT_PRIVATE_KEY2],

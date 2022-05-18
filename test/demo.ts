@@ -11,23 +11,25 @@ const { expect } = chai;
 describe("Demo", () => {
   let demo: Demo;
   let callDemo: CallDemo;
-  let signers: SignerWithAddress[];
+  let deployer: SignerWithAddress;
+  let user2: SignerWithAddress;
 
   beforeEach(async () => {
     // 1
-    signers = await ethers.getSigners();
+    const accounts = await ethers.getSigners();
+    [deployer, user2] = accounts;
 
     // 2
     const demoFactory = (await ethers.getContractFactory(
       "Demo",
-      signers[0]
+      deployer
     )) as Demo__factory;
     demo = await demoFactory.deploy();
     await demo.deployed();
 
     const callDemoFactory = (await ethers.getContractFactory(
       "CallDemo",
-      signers[0]
+      deployer
     )) as CallDemo__factory;
     callDemo = await callDemoFactory.deploy();
     await callDemo.deployed();
@@ -39,7 +41,7 @@ describe("Demo", () => {
   });
 
   // 4
-  describe.skip("check name", async () => {
+  describe("check name", async () => {
     it("name should be hendry", async () => {
       let name = await demo.getName();
       expect(name).to.eq("hendry");
@@ -56,7 +58,7 @@ describe("Demo", () => {
     it("successfully deposit 0.2 Eth into Demo Contract", async () => {
       let tx; // https://stackoverflow.com/questions/70677788/when-is-tx-wait1-required
 
-      tx = await signers[0].sendTransaction({
+      tx = await deployer.sendTransaction({
         to: demo.address,
         value: ethers.utils.parseEther("0.2"),
       });
@@ -65,7 +67,7 @@ describe("Demo", () => {
       const balanceInEth = ethers.utils.formatEther(demoBalance.toString());
       expect(balanceInEth).to.eq("0.2");
 
-      const signerBalance = await signers[0].getBalance();
+      const signerBalance = await deployer.getBalance();
       const signerBalanceInEth = ethers.utils.formatEther(
         signerBalance.toString()
       );
@@ -76,7 +78,7 @@ describe("Demo", () => {
       let tx;
 
       // Fund Demo Contract with 0.2 Eth
-      tx = await signers[0].sendTransaction({
+      tx = await deployer.sendTransaction({
         to: demo.address,
         value: ethers.utils.parseEther("0.2"),
       });

@@ -1,7 +1,12 @@
 npm run test -- --network rinkeby
 npx hardhat run --network <localhost> scripts/deploy
+npx hardhat node --fork https://eth-mainnet.alchemyapi.io/v2/<key>
 
-# Typescript Solidity Dev Starter Kit
+## InternalError: Unknown transaction type 2 — Ethereum Development with Hardhat
+
+https://yuichiroaoki.medium.com/internalerror-unknown-transaction-type-2-hardhat-403031bb0c11
+
+## Typescript Solidity Dev Starter Kit
 
 https://github.com/rhlsthrm/typescript-solidity-dev-starter-kit
 
