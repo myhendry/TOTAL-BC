@@ -17,10 +17,10 @@ interface Etherscan {
 type HardhatUserEtherscanConfig = HardhatUserConfig & Etherscan;
 
 const INFURA_API_KEY = process.env.INFURA_API_KEY || "";
-const RINKEBY_PRIVATE_KEY =
-  process.env.RINKEBY_PRIVATE_KEY! ||
+const ACCOUNT_PRIVATE_KEY1 =
+  process.env.ACCOUNT_PRIVATE_KEY1! ||
   "0xc87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3"; // well known private key
-const KOVAN_PRIVATE_KEY = process.env.KOVAN_PRIVATE_KEY!;
+const ACCOUNT_PRIVATE_KEY2 = process.env.ACCOUNT_PRIVATE_KEY2!;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
 const config: HardhatUserEtherscanConfig = {
@@ -37,11 +37,11 @@ const config: HardhatUserEtherscanConfig = {
     localhost: {},
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
-      accounts: [RINKEBY_PRIVATE_KEY],
+      accounts: [ACCOUNT_PRIVATE_KEY1, ACCOUNT_PRIVATE_KEY2],
     },
     kovan: {
       url: `https://kovan.infura.io/v3/${INFURA_API_KEY}`,
-      accounts: [KOVAN_PRIVATE_KEY],
+      accounts: [ACCOUNT_PRIVATE_KEY1, ACCOUNT_PRIVATE_KEY2],
     },
     coverage: {
       url: "http://127.0.0.1:8555", // Coverage launches its own ganache-cli client
