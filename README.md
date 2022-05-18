@@ -1,6 +1,8 @@
-npm run test -- --network rinkeby
-npx hardhat run --network <localhost> scripts/deploy
 npx hardhat node --fork https://eth-mainnet.alchemyapi.io/v2/<key>
+
+npm run test -- --network hardhat
+
+npx hardhat run --network hardhat scripts/deploy
 
 ## InternalError: Unknown transaction type 2 — Ethereum Development with Hardhat
 
