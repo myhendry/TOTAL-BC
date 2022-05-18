@@ -4,6 +4,10 @@ npm run test -- --network hardhat
 
 npx hardhat run --network hardhat scripts/deploy
 
+## Testing Environments
+
+https://ethereum.stackexchange.com/questions/104030/testing-token-with-uniswap-liquidity-provisioning-using-hardhat
+
 ## InternalError: Unknown transaction type 2 — Ethereum Development with Hardhat
 
 https://yuichiroaoki.medium.com/internalerror-unknown-transaction-type-2-hardhat-403031bb0c11
