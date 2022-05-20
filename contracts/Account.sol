@@ -12,7 +12,7 @@ contract Account {
 
     constructor(address _owner) payable {
         bank = msg.sender;
-        owner = owner;
+        owner = _owner;
     }
 }
 
@@ -21,6 +21,11 @@ contract AccountFactory {
 
     function createAccount(address _owner) external payable {
         Account account = new Account{value: 111}(_owner);
+        console.log("owner", _owner);
+        address bank = account.bank();
+        console.log("bank", bank);
+        address owner = account.owner();
+        console.log("owner", owner);
         accounts.push(account);
     }
 }

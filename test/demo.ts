@@ -2,7 +2,14 @@ import { ethers } from "hardhat";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-import { Demo__factory, Demo, CallDemo__factory, CallDemo } from "../typechain";
+import {
+  Demo__factory,
+  Demo,
+  CallDemo__factory,
+  CallDemo,
+  AccountFactory,
+  AccountFactory__factory,
+} from "../typechain";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 chai.use(chaiAsPromised);
@@ -11,6 +18,7 @@ const { expect } = chai;
 describe("Demo", () => {
   let demo: Demo;
   let callDemo: CallDemo;
+  let accountFactory: AccountFactory;
   let deployer: SignerWithAddress;
   let user2: SignerWithAddress;
 
@@ -33,6 +41,13 @@ describe("Demo", () => {
     )) as CallDemo__factory;
     callDemo = await callDemoFactory.deploy();
     await callDemo.deployed();
+
+    const accountTemplateFactory = (await ethers.getContractFactory(
+      "AccountFactory",
+      deployer
+    )) as AccountFactory__factory;
+    accountFactory = await accountTemplateFactory.deploy();
+    await accountFactory.deployed();
 
     // 3
     const initialName = await demo.getName();
@@ -112,6 +127,23 @@ describe("Demo", () => {
     it("interfaces", async () => {
       const res = await demo.getTokenReserves();
       console.log(res[0].toString(), res[1].toString());
+    });
+  });
+
+  describe("New Factory", async () => {
+    it("successfully uses factory to create new accounts", async () => {
+      await accountFactory
+        .connect(deployer)
+        .createAccount(user2.address, { value: 200 });
+      const acc1 = await accountFactory.accounts(0);
+      console.log("acc1", acc1);
+      console.log(
+        "deployer balance",
+        await (await deployer.getBalance()).toString()
+      );
+      console.log("user2 balance", await (await user2.getBalance()).toString());
+      console.log("deployer address", deployer.address);
+      console.log("user2 address", user2.address);
     });
   });
 });
