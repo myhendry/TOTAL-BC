@@ -1,3 +1,4 @@
+import { sum } from "chain-utils";
 import { ethers } from "hardhat";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -144,6 +145,7 @@ describe("Demo", () => {
       console.log("user2 balance", await (await user2.getBalance()).toString());
       console.log("deployer address", deployer.address);
       console.log("user2 address", user2.address);
+      console.log(sum(10, 20));
     });
   });
 });
