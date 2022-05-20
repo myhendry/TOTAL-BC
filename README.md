@@ -1,3 +1,8 @@
+## TODO
+
+New
+// https://youtu.be/J2Wp2SHq1Qo
+
 npx hardhat node --fork https://eth-mainnet.alchemyapi.io/v2/<key>
 
 npm run test -- --network hardhat
@@ -5,6 +10,8 @@ npm run test -- --network hardhat
 npx hardhat run --network hardhat scripts/deploy
 
 ## Testing Environments
+
+https://hardhat.org/hardhat-network/guides/mainnet-forking.html
 
 https://ethereum.stackexchange.com/questions/104030/testing-token-with-uniswap-liquidity-provisioning-using-hardhat
 

@@ -20,6 +20,7 @@ async function main() {
   let counterAddress;
   let demoAddress;
   let callDemoAddress;
+  let accountFactoryAddress;
 
   //* CUSTOM CONTRACTS
   const counterFactory = await ethers.getContractFactory("Counter");
@@ -41,6 +42,14 @@ async function main() {
   callDemoAddress = callDemoContract.address;
   console.log(`CallDemo Mined! CallDemo Address is at ${callDemoAddress} \n`);
 
+  const accountFactory = await ethers.getContractFactory("AccountFactory");
+  let accountFactoryContract = await accountFactory.deploy();
+  await accountFactoryContract.deployed();
+  accountFactoryAddress = accountFactoryContract.address;
+  console.log(
+    `AccountFactory Mined! AccountFactory Address is at ${accountFactoryAddress} \n`
+  );
+
   // // const nftMarketplaceFactory = await ethers.getContractFactory(
   // //   "NFTMarketplace"
   // // );
@@ -52,7 +61,8 @@ async function main() {
   console.log(`The contract addresses are as follow: \n
   counterContractAddress: ${counterAddress}, \n
   demoContractAddress: ${demoAddress}, \n
-  callDemoContractAddress: ${callDemoAddress} \n 
+  callDemoAddress: ${callDemoAddress}, \n
+  accountFactoryAddress: ${accountFactoryAddress} \n 
   `);
 
   let config = `
@@ -60,6 +70,7 @@ async function main() {
   export const counterContractAddress = "${counterAddress}"
   export const demoContractAddress = "${demoAddress}"
   export const callDemoContractAddress = "${callDemoAddress}"
+  export const accountFactoryAddress = "${accountFactoryAddress}"
   `;
 
   writeAddressToFrontend(config);

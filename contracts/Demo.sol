@@ -38,6 +38,7 @@ contract Demo {
         _;
     }
 
+    //* Fallbacks
     receive() external payable {}
 
     //* Interfaces
@@ -55,6 +56,7 @@ contract Demo {
         return (reserve0, reserve1);
     }
 
+    //* Deposit and Withdraw Eth
     function withdraw(uint256 _amount) external onlyOwner {
         owner.transfer(_amount);
     }

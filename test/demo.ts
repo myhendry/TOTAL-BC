@@ -54,7 +54,7 @@ describe("Demo", () => {
     });
   });
 
-  describe.skip("test deposit and withdraw function", async () => {
+  describe("test deposit and withdraw function", async () => {
     it("successfully deposit 0.2 Eth into Demo Contract", async () => {
       let tx; // https://stackoverflow.com/questions/70677788/when-is-tx-wait1-required
 
@@ -74,10 +74,10 @@ describe("Demo", () => {
       expect(parseInt(signerBalanceInEth)).to.be.lessThan(10_000);
     });
 
-    it("successfully withdraw 0.1 Eth from Demo Contract", async () => {
+    it("successfully Deposit and Withdraw 0.1 Eth from Demo Contract", async () => {
       let tx;
 
-      // Fund Demo Contract with 0.2 Eth
+      // Fund or Deposit Demo Contract with 0.2 Eth
       tx = await deployer.sendTransaction({
         to: demo.address,
         value: ethers.utils.parseEther("0.2"),
@@ -98,7 +98,7 @@ describe("Demo", () => {
     });
   });
 
-  describe.skip("test call other contract function", async () => {
+  describe("test call other contract function", async () => {
     it("call setName and getName functions successfully in CallDemo", async () => {
       let name = await callDemo.getName(demo.address);
       expect(name).to.be.eq("hendry");
