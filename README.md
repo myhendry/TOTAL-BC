@@ -5,9 +5,11 @@ New
 
 npx hardhat node --fork https://eth-mainnet.alchemyapi.io/v2/<key>
 
-npm run test -- --network hardhat
+npm run test -- --network localhost
 
-npx hardhat run --network hardhat scripts/deploy
+<!-- npx hardhat run --network hardhat scripts/deploy.ts -->
+
+npx hardhat run --network localhost scripts/deploy.ts
 
 ## Testing Environments
 
