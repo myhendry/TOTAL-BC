@@ -21,6 +21,7 @@ async function main() {
   let demoAddress;
   let callDemoAddress;
   let accountFactoryAddress;
+  let v3Address;
 
   //* CUSTOM CONTRACTS
   const counterFactory = await ethers.getContractFactory("Counter");
@@ -50,6 +51,12 @@ async function main() {
     `AccountFactory Mined! AccountFactory Address is at ${accountFactoryAddress} \n`
   );
 
+  const v3Factory = await ethers.getContractFactory("V3");
+  let v3Contract = await v3Factory.deploy();
+  await v3Contract.deployed();
+  v3Address = v3Contract.address;
+  console.log(`V3 Mined! V3 Address is at ${demoAddress} \n`);
+
   // // const nftMarketplaceFactory = await ethers.getContractFactory(
   // //   "NFTMarketplace"
   // // );
@@ -63,6 +70,7 @@ async function main() {
   demoContractAddress: ${demoAddress}, \n
   callDemoAddress: ${callDemoAddress}, \n
   accountFactoryAddress: ${accountFactoryAddress} \n 
+  v3Address: ${v3Address} \n 
   `);
 
   let config = `
@@ -71,6 +79,7 @@ async function main() {
   export const demoContractAddress = "${demoAddress}"
   export const callDemoContractAddress = "${callDemoAddress}"
   export const accountFactoryAddress = "${accountFactoryAddress}"
+  export const v3Address = "${v3Address}"
   `;
 
   writeAddressToFrontend(config);

@@ -23,6 +23,28 @@ import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol";
 //         );
 // }
 
+//! https://youtu.be/gyMwXuJrbJQ
+//! 4:15
+
+interface AggregatorV3Interface {
+    function decimals() external view returns (uint8);
+
+    function description() external view returns (string memory);
+
+    function version() external view returns (uint256);
+
+    function latestRoundData()
+        external
+        view
+        returns (
+            uint80 roundId,
+            int256 answer,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        );
+}
+
 contract Demo {
     string public name = "hendry";
     string public country = "singapore";
@@ -41,7 +63,33 @@ contract Demo {
     //* Fallbacks
     receive() external payable {}
 
-    //* Interfaces
+    //* Using Interfaces
+    address private chainlink_eth_usd =
+        0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419;
+
+    function getV3Version() external view returns (uint256) {
+        uint256 res = AggregatorV3Interface(chainlink_eth_usd).version();
+        return res;
+    }
+
+    function getLatestRoundData() external view returns (int256) {
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(
+            chainlink_eth_usd
+        );
+
+        (
+            uint80 roundId,
+            int256 price,
+            uint256 startedAt,
+            uint256 updatedAt,
+            uint80 answeredInRound
+        ) = priceFeed.latestRoundData();
+
+        // ETH in terms of USD
+        return (price * 1e10);
+    }
+
+    //* Using Imported Interfaces
     address private factory = 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f;
     address private dai = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
     address private weth = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
@@ -49,7 +97,6 @@ contract Demo {
 
     function getTokenReserves() external view returns (uint256, uint256) {
         address pair = IUniswapV2Factory(factory).getPair(dai, usdt);
-        console.log("pair", pair);
         (uint256 reserve0, uint256 reserve1, ) = IUniswapV2Pair(pair)
             .getReserves();
 
