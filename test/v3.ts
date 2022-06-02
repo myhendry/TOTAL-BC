@@ -1,6 +1,7 @@
 import { ethers } from "hardhat";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 import {
   Demo__factory,
@@ -11,16 +12,21 @@ import {
   AccountFactory__factory,
   V3,
   V3__factory,
+  V2,
+  V2__factory,
 } from "../typechain";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 chai.use(chaiAsPromised);
 const { expect } = chai;
+
+//! https://youtu.be/gyMwXuJrbJQ
+//! 4:25
 
 describe("Demo", () => {
   let demo: Demo;
   let callDemo: CallDemo;
   let accountFactory: AccountFactory;
+  let v2Factory: V2;
   let v3Factory: V3;
   let deployer: SignerWithAddress;
   let user2: SignerWithAddress;
@@ -52,6 +58,13 @@ describe("Demo", () => {
     accountFactory = await accountTemplateFactory.deploy();
     await accountFactory.deployed();
 
+    const v2TemplateFactory = (await ethers.getContractFactory(
+      "V2",
+      deployer
+    )) as V2__factory;
+    v2Factory = await v2TemplateFactory.deploy();
+    await v2Factory.deployed();
+
     const v3TemplateFactory = (await ethers.getContractFactory(
       "V3",
       deployer
@@ -66,8 +79,8 @@ describe("Demo", () => {
       expect(res.toString()).to.be.eq("4");
     });
 
-    it("successfully get chainlink aggregatorV3Interface getLatestRoundData", async () => {
-      const res = await demo.getLatestRoundData();
+    xit("successfully get chainlink aggregatorV3Interface getLatestRoundData", async () => {
+      const res = await v3Factory.getLatestRoundData();
       console.log(res.toString());
       //       const res1 = await v3Factory.getConversionRate(1000000000000000000);
       //       console.log(res1);
@@ -75,6 +88,9 @@ describe("Demo", () => {
     });
 
     it("successfully fund with USD", async () => {
+      await v3Factory
+        .connect(user2)
+        .fund({ value: ethers.utils.parseEther("0.01") });
       //       const res = await
       // console.log(res.toString());
       // expect(res.toNumber()).to.be.greaterThan(10000000);

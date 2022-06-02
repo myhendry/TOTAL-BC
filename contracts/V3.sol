@@ -25,7 +25,7 @@ interface AggregatorV3Interface {
 }
 
 contract V3 {
-    uint256 minimumSum = 50;
+    uint256 minimumSum = 50 * 1e18;
 
     //! To interact with external contracts, you can use
     //! Interfaces, npm, github link
@@ -67,6 +67,9 @@ contract V3 {
 
     function fund() public payable {
         console.log("msg.value", msg.value);
-        require(msg.value >= minimumSum, "Not enough value");
+        console.log("msg.sender", msg.sender);
+        console.log("minimumSum", minimumSum);
+        require(msg.value >= 10000000000000000, "Not enough value");
+        // todo compare msg.sender to an address
     }
 }

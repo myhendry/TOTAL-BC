@@ -14,6 +14,10 @@ describe.skip("Counter", () => {
     // 1
     const signers = await ethers.getSigners();
 
+    // for (const account of signers) {
+    //   console.log(account.address);
+    // }
+
     // 2
     const counterFactory = (await ethers.getContractFactory(
       "Counter",

@@ -2,6 +2,7 @@ import { sum } from "chain-utils";
 import { ethers } from "hardhat";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 import {
   Demo__factory,
@@ -11,7 +12,6 @@ import {
   AccountFactory,
   AccountFactory__factory,
 } from "../typechain";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 chai.use(chaiAsPromised);
 const { expect } = chai;
@@ -114,6 +114,36 @@ describe("Demo", () => {
     });
   });
 
+  describe("test fund and unfund function", async () => {
+    it("successfully fund", async () => {
+      await demo.fund({ value: ethers.utils.parseEther("0.2") });
+      const amount = await demo.checkFund(deployer.address);
+      expect(ethers.utils.formatEther(amount)).to.be.eq("0.2");
+    });
+
+    it("successfully unfund", async () => {
+      let amount;
+
+      const bal1 = await deployer.getBalance();
+      console.log("bal1", ethers.utils.formatEther(bal1));
+      await demo.fund({ value: ethers.utils.parseEther("2.0") });
+      const bal2 = await deployer.getBalance();
+      console.log("bal2", ethers.utils.formatEther(bal2));
+      const bal_demo1 = await demo.getBalance();
+      console.log("bal_demo1", ethers.utils.formatEther(bal_demo1));
+      amount = await demo.checkFund(deployer.address);
+      expect(ethers.utils.formatEther(amount)).to.be.eq("2.0");
+      await demo.unfund();
+      amount = await demo.checkFund(deployer.address);
+      expect(ethers.utils.formatEther(amount)).to.be.eq("0.0");
+      //todo how to test eth for msg.sender in test?
+      const bal3 = await deployer.getBalance();
+      console.log("bal3", ethers.utils.formatEther(bal3));
+      const bal_demo2 = await demo.getBalance();
+      console.log("bal_demo2", ethers.utils.formatEther(bal_demo2));
+    });
+  });
+
   describe("test call other contract function", async () => {
     it("call setName and getName functions successfully in CallDemo", async () => {
       let name = await callDemo.getName(demo.address);
@@ -121,13 +151,6 @@ describe("Demo", () => {
       await callDemo.setName(demo.address, "steve");
       name = await callDemo.getName(demo.address);
       expect(name).to.be.eq("steve");
-    });
-  });
-
-  describe("Interfaces", async () => {
-    it("interfaces", async () => {
-      const res = await demo.getTokenReserves();
-      console.log(res[0].toString(), res[1].toString());
     });
   });
 

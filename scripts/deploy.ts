@@ -22,6 +22,7 @@ async function main() {
   let callDemoAddress;
   let accountFactoryAddress;
   let v3Address;
+  let v2Address;
 
   //* CUSTOM CONTRACTS
   const counterFactory = await ethers.getContractFactory("Counter");
@@ -51,11 +52,17 @@ async function main() {
     `AccountFactory Mined! AccountFactory Address is at ${accountFactoryAddress} \n`
   );
 
+  const v2Factory = await ethers.getContractFactory("V2");
+  let v2Contract = await v2Factory.deploy();
+  await v2Contract.deployed();
+  v2Address = v2Contract.address;
+  console.log(`V2 Mined! V2 Address is at ${v2Address} \n`);
+
   const v3Factory = await ethers.getContractFactory("V3");
   let v3Contract = await v3Factory.deploy();
   await v3Contract.deployed();
   v3Address = v3Contract.address;
-  console.log(`V3 Mined! V3 Address is at ${demoAddress} \n`);
+  console.log(`V3 Mined! V3 Address is at ${v3Address} \n`);
 
   // // const nftMarketplaceFactory = await ethers.getContractFactory(
   // //   "NFTMarketplace"
@@ -70,6 +77,7 @@ async function main() {
   demoContractAddress: ${demoAddress}, \n
   callDemoAddress: ${callDemoAddress}, \n
   accountFactoryAddress: ${accountFactoryAddress} \n 
+  v2Address: ${v2Address} \n 
   v3Address: ${v3Address} \n 
   `);
 
@@ -79,6 +87,7 @@ async function main() {
   export const demoContractAddress = "${demoAddress}"
   export const callDemoContractAddress = "${callDemoAddress}"
   export const accountFactoryAddress = "${accountFactoryAddress}"
+  export const v2Address = "${v2Address}"
   export const v3Address = "${v3Address}"
   `;
 
