@@ -23,6 +23,9 @@ describe("Demo", () => {
   let deployer: SignerWithAddress;
   let user2: SignerWithAddress;
 
+  //! https://youtu.be/gyMwXuJrbJQ
+  //! 4:53
+
   beforeEach(async () => {
     // 1
     const accounts = await ethers.getSigners();
@@ -121,26 +124,37 @@ describe("Demo", () => {
       expect(ethers.utils.formatEther(amount)).to.be.eq("0.2");
     });
 
-    it("successfully unfund", async () => {
+    it("successfully fund and unfund", async () => {
       let amount;
 
+      // Get Deployer Balance BEFORE funding
       const bal1 = await deployer.getBalance();
-      console.log("bal1", ethers.utils.formatEther(bal1));
+      // Deployer Fund Contract
       await demo.fund({ value: ethers.utils.parseEther("2.0") });
+      // Get Deployer Balance AFTER funding
       const bal2 = await deployer.getBalance();
-      console.log("bal2", ethers.utils.formatEther(bal2));
+      // Compare Deployer Balance Before and After funding
+      const diff1 =
+        parseInt(ethers.utils.formatEther(bal1)) -
+        parseInt(ethers.utils.formatEther(bal2));
+      expect(diff1).to.be.eq(2);
+      // Get Contract Balance After Funding
       const bal_demo1 = await demo.getBalance();
-      console.log("bal_demo1", ethers.utils.formatEther(bal_demo1));
+      expect(ethers.utils.formatEther(bal_demo1)).to.be.eq("2.0");
+      // Check Deployer Balance in Mapping Before unfund
       amount = await demo.checkFund(deployer.address);
       expect(ethers.utils.formatEther(amount)).to.be.eq("2.0");
+      // Unfund
       await demo.unfund();
+      // Check Deployer Balance in Mapping After unfund
       amount = await demo.checkFund(deployer.address);
       expect(ethers.utils.formatEther(amount)).to.be.eq("0.0");
-      //todo how to test eth for msg.sender in test?
+      // Check Deployer Balance after unfund
       const bal3 = await deployer.getBalance();
-      console.log("bal3", ethers.utils.formatEther(bal3));
+      // console.log("bal3", ethers.utils.formatEther(bal3));
+      // Check Contract Balance after unfund
       const bal_demo2 = await demo.getBalance();
-      console.log("bal_demo2", ethers.utils.formatEther(bal_demo2));
+      expect(ethers.utils.formatEther(bal_demo2)).to.be.eq("0.0");
     });
   });
 
@@ -169,6 +183,14 @@ describe("Demo", () => {
       console.log("deployer address", deployer.address);
       console.log("user2 address", user2.address);
       console.log(sum(10, 20));
+    });
+  });
+
+  describe("test chainlink functions", async () => {
+    it("successfully convert", async () => {
+      await demo.exchange({
+        value: ethers.utils.parseEther("0.1"),
+      });
     });
   });
 });

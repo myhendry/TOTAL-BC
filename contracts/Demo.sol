@@ -3,10 +3,15 @@ pragma solidity ^0.7.6;
 
 import "hardhat/console.sol";
 
+import "@chainlink/contracts/src/v0.7/interfaces/AggregatorV3Interface.sol";
+import "./PriceConverter.sol";
+
 contract Demo {
     string public name = "hendry";
     string public country = "singapore";
     address payable public owner;
+    AggregatorV3Interface private s_priceFeed;
+    uint256 public constant MINIMUM_USD = 50 * 10**18;
 
     //* Array and Mapping Funders
     address[] public funders;
@@ -14,6 +19,10 @@ contract Demo {
 
     constructor() {
         owner = payable(msg.sender);
+        // Eth to Usd Price Feed Address
+        s_priceFeed = AggregatorV3Interface(
+            0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419
+        );
     }
 
     //* Modifiers
@@ -24,6 +33,17 @@ contract Demo {
 
     //* Fallbacks
     receive() external payable {}
+
+    //* Using ChainLink Price Converter to Convert USD to ETH
+    using PriceConverter for uint256;
+
+    //todo
+    function exchange() external payable returns (uint256) {
+        require(
+            msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD,
+            "You need more Eth"
+        );
+    }
 
     //* Array and Mapping Funders
     function fund() public payable {
@@ -50,7 +70,16 @@ contract Demo {
         funders = new address[](0);
 
         //! withdraw the funds - 3 ways: transfer / send / call
+        //! transfer - cap at 2300 gas and revert if fail
         payable(msg.sender).transfer(address(this).balance);
+
+        //! OR send - cap at 2300 gas and returns bool
+        // bool sendSuccess = payable(msg.sender).send(address(this).balance);
+        // require(sendSuccess, "Send Failed");
+
+        //! OR call - forward all gas or set gas and returns bool (Lower level)
+        // (bool sendSuccess, bytes memory dataReturned) = payable(msg.sender)
+        //     .call{value: address(this).balance}(""); // ("") because not calling any function
     }
 
     //* Deposit and Withdraw Eth

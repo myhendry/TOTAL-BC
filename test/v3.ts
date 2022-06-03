@@ -19,9 +19,6 @@ import {
 chai.use(chaiAsPromised);
 const { expect } = chai;
 
-//! https://youtu.be/gyMwXuJrbJQ
-//! 4:25
-
 describe("Demo", () => {
   let demo: Demo;
   let callDemo: CallDemo;
@@ -79,12 +76,11 @@ describe("Demo", () => {
       expect(res.toString()).to.be.eq("4");
     });
 
-    xit("successfully get chainlink aggregatorV3Interface getLatestRoundData", async () => {
+    it("successfully get chainlink aggregatorV3Interface getLatestRoundData", async () => {
       const res = await v3Factory.getLatestRoundData();
-      console.log(res.toString());
-      //       const res1 = await v3Factory.getConversionRate(1000000000000000000);
-      //       console.log(res1);
-      // expect(res.toNumber()).to.be.greaterThan(10000000);
+
+      const ethUsd = await v3Factory.getConversionRate(1);
+      expect(ethUsd.toNumber()).to.be.greaterThan(1000);
     });
 
     it("successfully fund with USD", async () => {

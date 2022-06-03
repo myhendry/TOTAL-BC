@@ -2,6 +2,7 @@
 
 New
 // https://youtu.be/J2Wp2SHq1Qo
+5.05
 
 npx hardhat node --fork https://eth-mainnet.alchemyapi.io/v2/<key>
 
