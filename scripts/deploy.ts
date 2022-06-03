@@ -65,14 +65,6 @@ async function main() {
   v3Address = v3Contract.address;
   console.log(`V3 Mined! V3 Address is at ${v3Address} \n`);
 
-  const converterFactory = await ethers.getContractFactory("Converter");
-  let converterContract = await converterFactory.deploy();
-  await converterContract.deployed();
-  converterAddress = converterContract.address;
-  console.log(
-    `Converter Mined! Converter Address is at ${converterAddress} \n`
-  );
-
   // // const nftMarketplaceFactory = await ethers.getContractFactory(
   // //   "NFTMarketplace"
   // // );
@@ -88,7 +80,6 @@ async function main() {
   accountFactoryAddress: ${accountFactoryAddress} \n 
   v2Address: ${v2Address} \n 
   v3Address: ${v3Address} \n 
-  converterAddress: ${converterAddress} \n 
   `);
 
   let config = `
@@ -99,7 +90,6 @@ async function main() {
   export const accountFactoryAddress = "${accountFactoryAddress}"
   export const v2Address = "${v2Address}"
   export const v3Address = "${v3Address}"
-  export const converterAddress = "${converterAddress}"
   `;
 
   writeAddressToFrontend(config);

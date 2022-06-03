@@ -7,6 +7,7 @@ import "@typechain/hardhat";
 import "@nomiclabs/hardhat-etherscan";
 import { task, types } from "hardhat/config";
 import "solidity-coverage";
+import "@appliedblockchain/chainlink-plugins-fund-link";
 interface Etherscan {
   etherscan: { apiKey: string | undefined };
 }

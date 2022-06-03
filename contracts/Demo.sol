@@ -45,6 +45,11 @@ contract Demo {
         );
     }
 
+    function testConversion() external view returns (uint256) {
+        uint256 amount = PriceConverter.getPrice(s_priceFeed);
+        return amount;
+    }
+
     //* Array and Mapping Funders
     function fund() public payable {
         funders.push(msg.sender);

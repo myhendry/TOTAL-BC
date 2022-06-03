@@ -3,6 +3,7 @@ import { ethers } from "hardhat";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { BigNumber } from "ethers";
 
 import {
   Demo__factory,
@@ -188,9 +189,15 @@ describe("Demo", () => {
 
   describe("test chainlink functions", async () => {
     it("successfully convert", async () => {
-      await demo.exchange({
+      const res = await demo.exchange({
         value: ethers.utils.parseEther("0.1"),
       });
+      // expect(res).to.be.revertedWith("You need more Eth");
+    });
+
+    it("successfully test conversion", async () => {
+      const amount = await demo.testConversion();
+      expect(amount).to.be.gte(BigNumber.from("10000000000"));
     });
   });
 });

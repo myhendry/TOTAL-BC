@@ -12,6 +12,10 @@ npm run test -- --network localhost
 
 npx hardhat run --network localhost scripts/deploy.ts
 
+## NOTES
+
+payable functions in solidity will return only the transaction hash
+
 ## Testing Environments
 
 https://hardhat.org/hardhat-network/guides/mainnet-forking.html
